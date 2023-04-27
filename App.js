@@ -1,20 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {StatusBar} from 'react-native';
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
+import {NavigationContainer} from "@react-navigation/native";
+import {SafeAreaProvider} from "react-native-safe-area-context";
+import CatalogNavigation from "./pages/CatalogNavigation";
 
 export default function App() {
+  const Tab = createBottomTabNavigator();
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <SafeAreaProvider>
+          <StatusBar barStyle={"dark-content"}/>
+          <NavigationContainer>
+              <Tab.Navigator>
+                  <Tab.Screen options={{ headerShown: false }} name="Главная" component={HomePage} />
+                  <Tab.Screen options={{ headerShown: false }} name="Каталог" component={CatalogNavigation} />
+                  <Tab.Screen options={{ headerShown: false }} name="Профиль" component={ProfilePage} />
+              </Tab.Navigator>
+          </NavigationContainer>
+      </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
