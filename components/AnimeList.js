@@ -30,9 +30,9 @@ const AnimeList = () => {
                     style={{maxHeight: "99%"}}
                     keyExtractor={item => item.id}
                     ItemSeparatorComponent={<View style={{height: 5}}></View>}
-                    /*onEndReached={() => {
+                    onEndReached={() => {
                         endReachedInvoke(true)
-                    }}*/
+                    }}
                     numColumns={2}
                     data={anime}
                     renderItem={({item}) =>
