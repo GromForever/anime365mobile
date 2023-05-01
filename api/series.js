@@ -1,6 +1,7 @@
-export const FetchAnimeAsync = async (page, limit) => {
-    let response = await fetch("https://smotret-anime.online/api/series/?limit=" + limit + "&offset=" + limit * page);
-    console.log("https://smotret-anime.online/api/series/?limit=" + limit + "&offset=" + limit * page)
+export const FetchAnimeAsync = async (start, limit, query = "") => {
+    let response = await fetch(`https://smotret-anime.online/api/series/?query=${query}&limit=${limit}&offset=${start}&fields=id,myAnimeListScore,titles,posterUrl,genres,year`);
+    if (!response.ok)
+        throw new Error("ServerError")
     let json =  await response.json();
     return json.data;
 }

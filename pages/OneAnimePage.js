@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Image, SafeAreaView, Text} from "react-native";
+import {Image, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {FetchOneAnimeAsync} from "../api/series";
 import LoadingComponent from "../components/LoadingComponent";
 import {useNavigation, useRoute} from "@react-navigation/native";
@@ -23,13 +23,21 @@ const OneAnimePage = () => {
 
 
     return (
-        <SafeAreaView>
+        <View>
             {loading && <LoadingComponent/>}
             <Image style={{height: 100, width: 100}} source={{uri: anime?.posterUrl}}/>
             <Text>{anime?.title}</Text>
             <Text>{anime?.url}</Text>
-        </SafeAreaView>
+        </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        marginTop: 10,
+    }
+})
 
 export default OneAnimePage;

@@ -1,6 +1,7 @@
+import React from "react"
 import {Image, ScrollView, StyleSheet, Text, View} from "react-native";
 
-const AnimeCard = ({animeInfo}) => {
+const AnimeCard = React.memo( ({animeInfo}) => {
     const RatingColor = (rating) => {
         const floatRating = parseFloat(rating)
         switch (true) {
@@ -15,8 +16,8 @@ const AnimeCard = ({animeInfo}) => {
                 <Image source={{uri: animeInfo?.posterUrl}} style={Styles.image}></Image>
                 <Text numberOfLines={1} style={Styles.title}>{animeInfo?.titles?.ru}</Text>
                 <Text numberOfLines={1} style={Styles.subTitle}>{animeInfo?.titles?.romaji}</Text>
-                {<ScrollView horizontal={true}>
-                    {animeInfo.genres.map((item) => <View key={item.id} style={Styles.genresBlock}>
+                {<ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
+                    {animeInfo.genres?.map((item) => <View key={item.id} style={Styles.genresBlock}>
                         <Text>
                             {item.title}
                         </Text>
@@ -30,14 +31,14 @@ const AnimeCard = ({animeInfo}) => {
                 </View>
             </View>
     );
-};
+})
 
 const Styles = StyleSheet.create({
     view: {
         borderRadius: 19,
         backgroundColor: "#D2D2D2",
         marginHorizontal: 5,
-        marginVertical: 10
+        marginVertical: 10,
     },
     image: {
         width: "100%",
@@ -51,10 +52,11 @@ const Styles = StyleSheet.create({
         fontWeight: "bold",
     },
     genresBlock: {
-        marginLeft: 5,
+        marginHorizontal: 5,
         marginTop: 5,
         padding: 3,
-        backgroundColor: "#1b5e20",
+        backgroundColor: "#5caf64",
+        borderRadius: 5,
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
@@ -69,7 +71,7 @@ const Styles = StyleSheet.create({
         main: {
             paddingTop: 10,
             paddingBottom: 5,
-            paddingHorizontal: 5,
+            paddingHorizontal: 10,
             width: "100%"
         },
         mainChild: {

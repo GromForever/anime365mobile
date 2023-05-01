@@ -1,58 +1,69 @@
-import React, {useEffect, useState} from 'react';
-import {View, FlatList, StyleSheet, TouchableOpacity} from "react-native";
-import AnimeCard from "./AnimeCard";
-import {FetchAnimeAsync} from "../api/series";
-import {useInfiniteScroll} from "../hooks/useInfiniteScroll";
-import LoadingComponent from "./LoadingComponent";
+import {FlatList, StyleSheet, TextInput, View, Text, Dimensions, TouchableOpacity} from "react-native";
 import {useNavigation} from "@react-navigation/native";
+import useFetchAnimeByQuery from "../hooks/useFetchAnimeByQuery";
+import {useCallback, useState} from "react";
+import Separator from "./Separator";
+import AnimeCard from "./AnimeCard";
+import LoadingComponent from "./LoadingComponent";
+import AnimeListHeader from "./AnimeListHeader";
 
 const AnimeList = () => {
-    let [anime, setAnime] = useState([]);
-    let [page, setPage] = useState(0);
     const navigation = useNavigation();
+    const [anime, isLoading, setQuery, onEndReached, onRefresh, isRefreshing] = useFetchAnimeByQuery();
+    const [searchTerm, setSearchTerm] = useState("");
+    const InputChangedHandler = (value) => {
+        const searchText = value;
+        setSearchTerm(searchText);
 
-
-    const UpdateAnimeState = async () => {
-        setPage(page + 1)
-        let animeList = await FetchAnimeAsync(page, 10);
-        setAnime([...anime, ...animeList])
+        debounce(() => {
+            setQuery(searchText)
+        }, 1000)();
     }
 
+    const renderItem = useCallback(({item}) => {
+        return (
+                <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate("OneAnime", {id: item.id, title: item.titles.ru})}>
+                    <View style={Styles.container}>
+                    <AnimeCard animeInfo={item}/>
+                        </View>
+                </TouchableOpacity>)
+    })
 
-    const [loading, endReachedInvoke] = useInfiniteScroll(UpdateAnimeState)
-    useEffect(() => {
-        UpdateAnimeState();
-    }, [])
+
+    function debounce(func, delay) {
+        let timeoutId;
+        return function() {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => func.apply(this, arguments), delay);
+        };
+    }
+
     return (
-        <View style={{height: "100%"}}>
-            <View style={{flex: 1}}>
-                {anime.length > 0 && <FlatList
-                    style={{maxHeight: "99%"}}
-                    keyExtractor={item => item.id}
-                    ItemSeparatorComponent={<View style={{height: 5}}></View>}
-                    onEndReached={() => {
-                        endReachedInvoke(true)
-                    }}
-                    numColumns={2}
-                    data={anime}
-                    renderItem={({item}) =>
-                            <View style={ContainerStyles.container}>
-                                <TouchableOpacity onPress={() => navigation.navigate("OneAnime", {id: item.id, title: item.titles.ru})}>
-                                    <AnimeCard animeInfo={item}/>
-                                </TouchableOpacity>
-                            </View>
-                        }
-                    contentContainerStyle={{paddingBottom: 50}}
-                ></FlatList>}
-                {loading && <LoadingComponent/>}
-            </View>
+        <View>
+            <FlatList
+                ListHeaderComponent={<AnimeListHeader onChange={InputChangedHandler} searchValue={searchTerm}/>}
+                onRefresh={onRefresh}
+                refreshing={isRefreshing}
+                data={anime}
+                ItemSeparatorComponent={Separator}
+                numColumns={2}
+                keyExtractor={item => item.id}
+                onEndReached={onEndReached}
+                onEndReachedThreshold={0.25}
+                renderItem={renderItem}/>
         </View>
     );
 };
 
-const ContainerStyles = StyleSheet.create({container: {
-        width: "50%",
-        display: "flex",
-    }})
+const Styles = StyleSheet.create({
+    container: {
+        width: Dimensions.get('window').width / 2
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: "bold"
+    }
+})
+
 
 export default AnimeList;

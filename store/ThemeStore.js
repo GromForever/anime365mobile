@@ -1,6 +1,6 @@
 import {action, makeObservable, observable} from "mobx";
 
-class ThemeStore {
+export default class ThemeStore {
     isDarkMode = false;
     constructor() {
         makeObservable(this, {

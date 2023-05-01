@@ -1,8 +1,7 @@
-import React from 'react';
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import InDevelopment from "../components/InDevelopment";
 
-const HomePage = () => {
+const CatalogFilterPage = () => {
     return (
         <View style={Styles.container}>
             <InDevelopment/>
@@ -13,10 +12,10 @@ const HomePage = () => {
 const Styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: "100%",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        height: "100%"
     }
 })
 
-export default HomePage;
+export default CatalogFilterPage;
