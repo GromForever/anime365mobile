@@ -1,10 +1,9 @@
-import {FlatList, StyleSheet, TextInput, View, Text, Dimensions, TouchableOpacity} from "react-native";
+import {FlatList, StyleSheet, View, Dimensions, TouchableOpacity} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import useFetchAnimeByQuery from "../hooks/useFetchAnimeByQuery";
 import {useCallback, useState} from "react";
 import Separator from "./Separator";
 import AnimeCard from "./AnimeCard";
-import LoadingComponent from "./LoadingComponent";
 import AnimeListHeader from "./AnimeListHeader";
 
 const AnimeList = () => {

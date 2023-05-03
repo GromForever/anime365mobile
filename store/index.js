@@ -1,6 +1,6 @@
 import UserStore from "./UserStore";
-import ThemeStore from "./ThemeStore";
+import SettingsStore from "./SettingsStore";
 
-export const userStore = new UserStore()
-export const themeStore = new ThemeStore();
+export const userStore = new UserStore();
+export const settingsStore = new SettingsStore();
 
