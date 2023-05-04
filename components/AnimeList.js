@@ -21,7 +21,7 @@ const AnimeList = () => {
 
     const renderItem = useCallback(({item}) => {
         return (
-                <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate("OneAnime", {id: item.id, title: item.titles.ru})}>
+                <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate("OneAnime", {id: item.id, title: item.titles.ru}, )}>
                     <View style={Styles.container}>
                     <AnimeCard animeInfo={item}/>
                         </View>
@@ -29,6 +29,7 @@ const AnimeList = () => {
     })
 
 
+    //TODO: Переделать эту функцию, она работает неправильно
     function debounce(func, delay) {
         let timeoutId;
         return function() {

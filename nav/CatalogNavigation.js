@@ -10,7 +10,7 @@ const CatalogNavigation = () => {
         <Stack.Navigator initialRouteName={"AnimeList"}>
             <Stack.Screen options={{headerShown: false}} name={"AnimeList"} component={CatalogPage}/>
             <Stack.Screen options={{headerShown: false}} name={"InternetError"} component={InternetErrorPage}/>
-            <Stack.Screen name={"OneAnime"} component={OneAnimePage}/>
+            <Stack.Screen name={"OneAnime"} options={({route}) => {title: route.params.title}} component={OneAnimePage}/>
             <Stack.Screen name={"CatalogFilter"} component={CatalogFilterPage}/>
         </Stack.Navigator>
     );
