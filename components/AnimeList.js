@@ -1,11 +1,13 @@
 import {FlatList, StyleSheet, View, Dimensions, TouchableOpacity} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import useFetchAnimeByQuery from "../hooks/useFetchAnimeByQuery";
-import {useCallback, useState} from "react";
+import {useCallback, useMemo, useState} from "react";
 import Separator from "./Separator";
 import AnimeCard from "./AnimeCard";
 import AnimeListHeader from "./AnimeListHeader";
 
+
+let debounceTimeout;
 const AnimeList = () => {
     const navigation = useNavigation();
     const [anime, isLoading, setQuery, onEndReached, onRefresh, isRefreshing] = useFetchAnimeByQuery();
@@ -16,7 +18,7 @@ const AnimeList = () => {
 
         debounce(() => {
             setQuery(searchText)
-        }, 1000)();
+        }, 500)();
     }
 
     const renderItem = useCallback(({item}) => {
@@ -28,29 +30,26 @@ const AnimeList = () => {
                 </TouchableOpacity>)
     })
 
-
-    //TODO: Переделать эту функцию, она работает неправильно
     function debounce(func, delay) {
-        let timeoutId;
         return function() {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => func.apply(this, arguments), delay);
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => func.apply(this, arguments), delay);
         };
     }
 
     return (
         <View>
-            <FlatList
-                ListHeaderComponent={<AnimeListHeader onChange={InputChangedHandler} searchValue={searchTerm}/>}
-                onRefresh={onRefresh}
-                refreshing={isRefreshing}
-                data={anime}
-                ItemSeparatorComponent={Separator}
-                numColumns={2}
-                keyExtractor={item => item.id}
-                onEndReached={onEndReached}
-                onEndReachedThreshold={0.25}
-                renderItem={renderItem}/>
+                <FlatList
+                    ListHeaderComponent={<AnimeListHeader onChange={InputChangedHandler} searchValue={searchTerm}/>}
+                    onRefresh={onRefresh}
+                    refreshing={isRefreshing}
+                    data={anime}
+                    ItemSeparatorComponent={Separator}
+                    numColumns={2}
+                    keyExtractor={item => item.id}
+                    onEndReached={onEndReached}
+                    onEndReachedThreshold={0.25}
+                    renderItem={renderItem}/>
         </View>
     );
 };
