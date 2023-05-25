@@ -1,34 +1,47 @@
-import {makeAutoObservable} from "mobx";
+import {makeAutoObservable, runInAction} from "mobx";
 import AsyncStorageNative from "@react-native-async-storage/async-storage/src/AsyncStorage.native";
-import {useColorScheme} from "react-native";
+import {Platform, useColorScheme} from "react-native";
+import SettingsHelper from "../common/SettingsHelper";
 
 export default class SettingsStore {
 
     //
     //Fields
     //
-
-    useSystemTheme;
-    isDarkTheme;
-    isCacheEnabled;
-    cacheMode;
-    commentTreeExp;
-    isNotificationsEnabled;
-    updateRate;
+    useSystemTheme = true;
+    isDarkTheme = false;
+    isCacheEnabled = false;
+    cacheMode = "onlyPosters";
+    commentTreeExp = false;
+    isNotificationsEnabled = true;
+    updateRate = 180;
 
     constructor() {
         makeAutoObservable(this)
-        this.loadConfiguration().catch(() => console.log("Произошла непредвиденная ошибка"));
+        this.loadConfiguration().catch((reason) => console.log(`Произошла непредвиденная ошибка при загрузке настроек. ${reason}`));
     }
 
     async loadConfiguration() {
-        this.useSystemTheme = (await AsyncStorageNative.getItem("useSystemThemeBool")) ?? true
-        this.isDarkTheme = (await AsyncStorageNative.getItem("isDarkThemeBool") ?? this.useSystemTheme ? useColorScheme() === "dark" : false)
-        this.isCacheEnabled = (await AsyncStorageNative.getItem("isCacheEnabledBool") ?? true)
-        this.cacheMode = (await AsyncStorageNative.getItem("cacheModeString") ?? "onlyPosters")
-        this.commentTreeExp = (await AsyncStorageNative.getItem("commentTreeBool") ?? false)
-        this.isNotificationsEnabled = (await AsyncStorageNative.getItem("isNotificationsEnabledBool") ?? true)
-        this.updateRate = (await AsyncStorageNative.getItem("updateRateInt") ?? 3 * 60)
+        if (Platform.OS !== "web") {
+            console.log("Загрузка настроек...")
+            const useSystemTheme = (await SettingsHelper.LoadSetting("useSystemThemeBool")) ?? true
+            const isDarkTheme = (await SettingsHelper.LoadSetting("isDarkThemeBool") ?? true)
+            const isCacheEnabled = (await SettingsHelper.LoadSetting("isCacheEnabledBool") ?? true)
+            const cacheMode = (await SettingsHelper.LoadSetting("cacheModeString") ?? "onlyPosters")
+            const commentTreeExp = (await SettingsHelper.LoadSetting("commentTreeBool") ?? false)
+            const isNotificationsEnabled = (await SettingsHelper.LoadSetting("isNotificationsEnabledBool") ?? true)
+            const updateRate = (await SettingsHelper.LoadSetting("updateRateInt") ?? 3 * 60)
+            runInAction(() => {
+                this.useSystemTheme = Boolean(useSystemTheme);
+                this.isDarkTheme = Boolean(isDarkTheme);
+                this.isCacheEnabled = Boolean(isCacheEnabled);
+                this.cacheMode = cacheMode;
+                this.commentTreeExp = Boolean(commentTreeExp);
+                this.isNotificationsEnabled = Boolean(isNotificationsEnabled);
+                this.updateRate = parseInt(updateRate);
+            })
+            console.log("Загрузка настроек завершена, проверьте лог на наличие ошибок.")
+        }
     }
 
     //
