@@ -3,7 +3,7 @@ import {FetchOneAnimeAsync} from "../api/series";
 import {useEffect, useState} from "react";
 
 export default function useFetchOneAnime(id) {
-    const [anime, setAnime] = useState({});
+    const [anime, setAnime] = useState(null);
     const [isLoading, setIsLoading] = useState(true)
 
 
