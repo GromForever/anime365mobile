@@ -1,7 +1,10 @@
-import React from "react"
-import {Image, ScrollView, StyleSheet, Text, View} from "react-native";
+import React, {useCallback, useEffect, useRef, useState} from "react"
+import {ScrollView, StyleSheet, Text, View, Image as NativeImage} from "react-native";
+import {Image} from "expo-image"
+import badImage from "../assets/Icon/Errors/error1.png";
 
 const AnimeCard = React.memo( ({animeInfo}) => {
+    const [imageUrl, setImageUrl] = useState(animeInfo.posterUrl);
     const RatingColor = (rating) => {
         const floatRating = parseFloat(rating)
         switch (true) {
@@ -11,9 +14,13 @@ const AnimeCard = React.memo( ({animeInfo}) => {
             default: return Styles.section.ratingBad
         }
     }
+
+    const HandleFetchImageError = useCallback(() => {
+        setImageUrl(NativeImage.resolveAssetSource(badImage).uri)
+    })
     return (
             <View style={Styles.view}>
-                <Image source={{uri: animeInfo?.posterUrl}} style={Styles.image}></Image>
+                <Image contentFit={"cover"} onError={HandleFetchImageError} placeholder={{uri: animeInfo.posterUrlSmall}} transition={250} source={{uri: imageUrl}} style={Styles.image}></Image>
                 <Text numberOfLines={1} style={Styles.title}>{animeInfo?.titles?.ru}</Text>
                 <Text numberOfLines={1} style={Styles.subTitle}>{animeInfo?.titles?.romaji}</Text>
                 {<ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
