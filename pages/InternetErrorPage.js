@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from "react-native"
+import {Pressable, StyleSheet, Text, View} from "react-native"
+import {Image} from "expo-image"
 import {useNavigation} from "@react-navigation/native";
 
 
@@ -21,7 +22,7 @@ const InternetErrorPage = () => {
     }
     return (
         <View style={PageStyles.container}>
-            <Image source={errorImage} alt={"Ошибка!"}/>
+            <Image transition={250} source={errorImage} alt={"Ошибка!"}/>
             <Text style={PageStyles.errorTitle}>Нет интернета</Text>
             <Text style={PageStyles.errorDescription}>Проверьте соединение с сетью и попробуйте снова.</Text>
             <Pressable onPress={() => navigation.goBack()}>
