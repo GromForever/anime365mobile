@@ -1,5 +1,6 @@
 import React from 'react';
-import {Platform, StyleSheet, View, Image, Text} from "react-native";
+import {Platform, StyleSheet, View, Text} from "react-native";
+import {Image} from "expo-image";
 import error from "../assets/Icon/Errors/error4.png"
 
 const InDevelopment = () => {
