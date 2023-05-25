@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from "react"
+import React, {useCallback, useState} from "react"
 import {ScrollView, StyleSheet, Text, View, Image as NativeImage} from "react-native";
 import {Image} from "expo-image"
 import badImage from "../assets/Icon/Errors/error1.png";

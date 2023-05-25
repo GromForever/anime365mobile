@@ -6,7 +6,6 @@ import {useAuth} from "../../hooks/useAuth";
 import LoadingButton from "../LoadingButton";
 
 const NotAuthorizedComponent = () => {
-    const navigation = useNavigation();
     const snapPoints = useMemo(() =>
         ["1%", "80%"], []
     )

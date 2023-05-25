@@ -1,7 +1,7 @@
 import {FlatList, StyleSheet, View, Dimensions, TouchableOpacity} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import useFetchAnimeByQuery from "../hooks/useFetchAnimeByQuery";
-import {useCallback, useMemo, useState} from "react";
+import {useCallback, useState} from "react";
 import Separator from "./Separator";
 import AnimeCard from "./AnimeCard";
 import AnimeListHeader from "./AnimeListHeader";

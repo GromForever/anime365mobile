@@ -37,7 +37,7 @@ const OneAnimePage = () => {
             <Text style={styles.subTitle}>{anime?.titles.romaji}</Text>
             <View style={styles.infoBlock}>
                 <View style={styles.rating}>
-                    <Text style={styles.ratingValue}>{anime?.myAnimeListScore == -1.0 ? "Без рейтинга" : parseFloat(anime?.myAnimeListScore).toFixed(1)}</Text>
+                    <Text style={styles.ratingValue}>{anime?.myAnimeListScore === "-1.0" ? "Без рейтинга" : parseFloat(anime?.myAnimeListScore).toFixed(1)}</Text>
                     <Feather name="star" size={18} color="#ffd700" />
                 </View>
                 <Text style={styles.studio}>{anime?.studio ?? ""}</Text>

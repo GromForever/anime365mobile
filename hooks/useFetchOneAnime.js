@@ -1,4 +1,3 @@
-import {useNavigation} from "@react-navigation/native";
 import {FetchOneAnimeAsync} from "../api/series";
 import {useEffect, useState} from "react";
 
