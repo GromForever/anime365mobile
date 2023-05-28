@@ -4,10 +4,14 @@ import {ThemeProvider} from "./common/ThemeProvider";
 import BottomMainNav from "./nav/BottomMainNav";
 import {useFonts} from "expo-font";
 import roboto from "./assets/fonts/Roboto-Regular.ttf"
+import robotoBold from "./assets/fonts/Roboto-Bold.ttf"
+import robotoLight from "./assets/fonts/Roboto-Light.ttf"
 
 const App = () => {
     const [fontsLoaded] = useFonts({
-        'roboto': roboto,
+        'roboto-regular': roboto,
+        'roboto-bold': robotoBold,
+        'roboto-light': robotoLight,
         'customicons': {uri: "https://smotret-anime.com/font/customicons/customicons.woff?2="}
     })
   return (

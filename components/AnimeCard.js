@@ -59,6 +59,7 @@ const Styles = StyleSheet.create({
         paddingTop: 5,
         paddingHorizontal: 7,
         fontSize: 16,
+        fontFamily: 'roboto-bold',
         fontWeight: "bold",
     },
     genresBlock: {
@@ -78,6 +79,7 @@ const Styles = StyleSheet.create({
         fontSize: 14,
         paddingTop: 5,
         paddingHorizontal: 7,
+        fontFamily: 'roboto-regular',
         fontWeight: "normal"
     },
     section: {
@@ -94,25 +96,30 @@ const Styles = StyleSheet.create({
         },
         year: {
             fontSize: 16,
+            fontFamily: 'roboto-regular',
             fontWeight: "bold"
         },
         ratingAwesome: {
             fontSize: 16,
+            fontFamily: 'roboto-bold',
             fontWeight: "bold",
             color: "#4caf50"
         },
         ratingGood: {
             fontSize: 16,
+            fontFamily: 'roboto-bold',
             fontWeight: "bold",
             color: "#4a148c"
         },
         ratingNormal: {
             fontSize: 16,
+            fontFamily: 'roboto-bold',
             fontWeight: "bold",
             color: "#f57f17"
         },
         ratingBad: {
             fontSize: 16,
+            fontFamily: 'roboto-bold',
             fontWeight: "bold",
             color: "#e53935"
         }

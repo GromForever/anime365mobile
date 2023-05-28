@@ -7,12 +7,15 @@ import {LinearGradient} from "expo-linear-gradient";
 import {AntDesign, Feather} from '@expo/vector-icons';
 import {useCallback, useEffect, useState} from "react";
 import badImage from "../assets/Icon/Errors/error1.png"
+import {useTheme} from "../hooks/useTheme";
 
 const OneAnimePage = () => {
     const {id} = useRoute().params;
     const [anime, isLoading] = useFetchOneAnime(id)
     const [imageUrl, setImageUrl] = useState(null)
     const [isOpened, setIsOpened] = useState(false)
+
+    const {themeStyles, theme} = useTheme();
 
     useEffect(() => {
         if (anime) {
@@ -25,47 +28,47 @@ const OneAnimePage = () => {
     })
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={[styles.container, themeStyles.background]}>
             {isLoading ? <LoadingComponent/> : <>
             <Image style={styles.image} onError={HandleFetchImageError} source={{uri: imageUrl}} placeholder={{uri: anime?.posterUrlSmall}} contentFit={"cover"} transition={250}>
                 <LinearGradient
-                    colors={['rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 1)']}
+                    colors={themeStyles.imgGradient}
                     style={styles.gradient}
                 />
             </Image>
-            <Text style={styles.title}>{anime?.titles.ru}</Text>
-            <Text style={styles.subTitle}>{anime?.titles.romaji}</Text>
+            <Text style={[styles.title, themeStyles.text]}>{anime?.titles.ru}</Text>
+            <Text style={[styles.subTitle, themeStyles.text]}>{anime?.titles.romaji}</Text>
             <View style={styles.infoBlock}>
                 <View style={styles.rating}>
                     <Text style={styles.ratingValue}>{anime?.myAnimeListScore === "-1.0" ? "Без рейтинга" : parseFloat(anime?.myAnimeListScore).toFixed(1)}</Text>
                     <Feather name="star" size={18} color="#ffd700" />
                 </View>
-                <Text style={styles.studio}>{anime?.studio ?? ""}</Text>
-                <Text style={styles.episodesCount}>{anime?.numberOfEpisodes ? anime?.numberOfEpisodes + " эпизодов" : ""}</Text>
-                <Text style={styles.year}>{anime?.year ? anime?.year + " г." : ""}</Text>
+                <Text style={[styles.studio, themeStyles.text]}>{anime?.studio ?? ""}</Text>
+                <Text style={[styles.episodesCount, themeStyles.text]}>{anime?.numberOfEpisodes ? anime?.numberOfEpisodes + " эпизодов" : ""}</Text>
+                <Text style={[styles.year, themeStyles.text]}>{anime?.year ? anime?.year + " г." : ""}</Text>
             </View>
             <View style={styles.genresBlock}>
                 {anime && anime.genres && anime?.genres.map((item) => {
-                    return <View key={item.id} style={styles.genre}><Text>{item.title}</Text></View>
+                    return <View key={item.id} style={[styles.genre, themeStyles.buttonBlock]}><Text style={themeStyles.text}>{item.title}</Text></View>
                 })}
             </View>
             <Pressable>
                 <View style={styles.watchButtonContainer}>
                     <View style={styles.watchButton}>
-                        <Text style={{color: "white", fontSize: 16, fontWeight: "bold"}}>Смотреть</Text>
+                        <Text style={[{color: "white", fontSize: 16, fontWeight: "bold"}, themeStyles.text]}>Смотреть</Text>
                     </View>
                 </View>
             </Pressable>
             <View style={[styles.descriptionBlock, isOpened ? styles.unlimitedHeight : styles.limitedHeight]}>
-                <Text style={{textAlign: "center", fontSize: 14}}>{anime?.descriptions[0].value}</Text>
+                <Text style={[{textAlign: "center", fontSize: 14}, themeStyles.text]}>{anime?.descriptions[0].value}</Text>
                 {!isOpened && <>
                     <LinearGradient
-                    colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0.5)', 'rgba(255, 255, 255, 1)']}
+                    colors={themeStyles.imgGradient}
                     style={styles.descriptionGradient}
                 />
                 <Pressable onPress={() => setIsOpened(true)}>
                     <View style={styles.downIcon}>
-                        <AntDesign style={{zIndex: 100}} name="down" size={30} color="black" />
+                        <AntDesign style={{zIndex: 100}} name="down" size={30} color={theme === "dark" ? "black" : "white"} />
                     </View>
                 </Pressable>
                 </>}
@@ -73,9 +76,9 @@ const OneAnimePage = () => {
             <View style={styles.episodesContainer}>
                 <View style={styles.episodesBlock}>
                 {anime && anime.episodes && anime.episodes.map((item,index) => {
-                    return <View key={index} style={styles.episode}>
-                        <AntDesign style={{paddingRight: 5}} name="playcircleo" size={24} color="black" />
-                        <Text style={{fontSize: 16}}>{item.episodeFull}</Text>
+                    return <View key={index} style={[styles.episode, themeStyles.buttonBlock]}>
+                        <AntDesign style={{paddingRight: 5}} name="playcircleo" size={24} color={theme === "dark" ? "black" : "white"} />
+                        <Text style={[{fontSize: 16}, themeStyles.text]}>{item.episodeFull}</Text>
                     </View>
                 })}
                 </View>
@@ -83,12 +86,12 @@ const OneAnimePage = () => {
             <View style={styles.moreBlock}>
                 <Pressable>
                     <View style={styles.moreItem}>
-                        <Text style={styles.moreItemText}>Комментарии</Text>
+                        <Text style={[styles.moreItemText, themeStyles.text]}>Комментарии</Text>
                     </View>
                 </Pressable>
                 <Pressable>
                     <View style={styles.moreItem}>
-                        <Text style={styles.moreItemText}>Моменты</Text>
+                        <Text style={[styles.moreItemText, themeStyles.text]}>Моменты</Text>
                     </View>
                 </Pressable>
             </View>

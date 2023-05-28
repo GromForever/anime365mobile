@@ -6,8 +6,11 @@ export type ThemeClasses = {
     settingsBlock: any,
     cardBackground: any,
     input: any,
-    inputTextColor: any
+    inputTextColor: any,
+    imgGradient: any
 }
+
+
 
 export type ThemeVariants = {
     light: ThemeClasses,
@@ -37,7 +40,8 @@ export const themes : ThemeVariants =  {
         input: {
             backgroundColor: "#FAFAFA"
         },
-        inputTextColor: "#000000"
+        inputTextColor: "#000000",
+        imgGradient: ['rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 1)']
     },
     dark: {
         background: {
@@ -61,6 +65,7 @@ export const themes : ThemeVariants =  {
         input: {
             backgroundColor: "#404040"
         },
-        inputTextColor: "#FFFFFF"
+        inputTextColor: "#FFFFFF",
+        imgGradient: ['rgba(0, 0, 0, 0)', 'rgba(49, 49, 49, 0.4)', 'rgba(49, 49, 49, 1)']
     }
 }

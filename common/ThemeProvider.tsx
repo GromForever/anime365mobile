@@ -1,4 +1,4 @@
-import {createContext, useState} from 'react';
+import {createContext, useEffect, useState} from 'react';
 import {themes} from "./ThemesStyle";
 import {settingsStore} from "../store";
 import {StatusBar} from "react-native";
@@ -17,6 +17,10 @@ export const ThemeProvider = observer(({ children }) => {
     const toggleTheme = () => {
         setTheme(settingsStore.theme === "dark" ? "dark" : "light");
     };
+
+    useEffect(() => {
+        setTheme(settingsStore.theme);
+    }, [settingsStore.theme]);
 
     const themeStyles = themes[theme];
 

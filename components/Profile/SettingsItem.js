@@ -8,7 +8,7 @@ const SettingsItem = ({icon, route, title}) => {
     const {themeStyles} = useTheme()
     const navigation = useNavigation();
     return (
-        <Pressable onPress={() => navigation.navigate(route)} style={style.container}>
+        <Pressable onPress={() => navigation.navigate(route, {title: title})} style={style.container}>
             <View style={style.block}>
                 <View style={{paddingLeft: 3, paddingRight: 5}}>
                     {icon}
