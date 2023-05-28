@@ -1,15 +1,23 @@
 import React from 'react';
-import {Text, TextInput, View} from "react-native";
+import {View, StyleSheet, SafeAreaView} from "react-native";
 import AnimeList from "../components/AnimeList";
+import {useTheme} from "../hooks/useTheme";
 
 const CatalogPage = () => {
+    const {themeStyles} = useTheme()
     return (
-        <View style={{height: "100%"}}>
-            <View style={{height: "100%"}}>
+        <View style={[styles.container, themeStyles.background]}>
+            <SafeAreaView>
                 <AnimeList></AnimeList>
-            </View>
+            </SafeAreaView>
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        height: "100%"
+    }
+})
 
 export default CatalogPage;

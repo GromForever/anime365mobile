@@ -1,11 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, TextInput, View} from "react-native";
+import {useTheme} from "../hooks/useTheme";
 
 const AnimeListHeader = ({searchValue, onChange}) => {
+    const {themeStyles} = useTheme();
     return (
         <View style={Styles.container}>
-            <Text style={Styles.title}>Аниме</Text>
-            <TextInput style={Styles.input} value={searchValue} onChangeText={onChange} placeholder={"Поиск аниме..."}></TextInput>
+            <Text style={[Styles.title, themeStyles.text]}>Аниме</Text>
+            <View style={[Styles.inputBlock, themeStyles.input]}>
+                <TextInput returnKeyType={"search"} placeholderTextColor={themeStyles.inputTextColor} style={Styles.input} value={searchValue} onChangeText={onChange} placeholder={"Поиск..."}></TextInput>
+            </View>
         </View>
     );
 };
@@ -15,17 +19,17 @@ const Styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     title: {
-        fontSize: 20,
+        fontSize: 28,
         fontWeight:"bold"
     },
     input: {
-        marginTop: 7,
-        paddingHorizontal: 5,
-        borderRadius: 10,
-        borderStyle: "solid",
-        borderWidth: 1,
-        borderColor: "#000000",
-        fontSize: 14
+        fontSize: 16,
+        paddingLeft: 5
+    },
+    inputBlock: {
+        padding: 3,
+        borderRadius: 8,
+        marginTop: 10
     }
 })
 

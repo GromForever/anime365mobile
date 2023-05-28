@@ -2,9 +2,12 @@ import React, {useCallback, useState} from "react"
 import {ScrollView, StyleSheet, Text, View, Image as NativeImage} from "react-native";
 import {Image} from "expo-image"
 import badImage from "../assets/Icon/Errors/error1.png";
+import {useTheme} from "../hooks/useTheme";
 
 const AnimeCard = React.memo( ({animeInfo}) => {
     const [imageUrl, setImageUrl] = useState(animeInfo.posterUrl);
+
+    const {themeStyles} = useTheme();
     const RatingColor = (rating) => {
         const floatRating = parseFloat(rating)
         switch (true) {
@@ -17,23 +20,23 @@ const AnimeCard = React.memo( ({animeInfo}) => {
 
     const HandleFetchImageError = useCallback(() => {
         setImageUrl(NativeImage.resolveAssetSource(badImage).uri)
-    })
+    }, [])
     return (
-            <View style={Styles.view}>
+            <View style={[Styles.view, themeStyles.cardBackground]}>
                 <Image contentFit={"cover"} onError={HandleFetchImageError} placeholder={{uri: animeInfo.posterUrlSmall}} transition={250} source={{uri: imageUrl}} style={Styles.image}></Image>
-                <Text numberOfLines={1} style={Styles.title}>{animeInfo?.titles?.ru}</Text>
-                <Text numberOfLines={1} style={Styles.subTitle}>{animeInfo?.titles?.romaji}</Text>
+                <Text numberOfLines={1} style={[Styles.title, themeStyles.text]}>{animeInfo?.titles?.ru}</Text>
+                <Text numberOfLines={1} style={[Styles.subTitle, themeStyles.text]}>{animeInfo?.titles?.romaji}</Text>
                 {<ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-                    {animeInfo.genres?.map((item) => <View key={item.id} style={Styles.genresBlock}>
-                        <Text>
+                    {animeInfo.genres?.map((item) => <View key={item.id} style={[Styles.genresBlock, themeStyles.buttonBlock]}>
+                        <Text style={themeStyles.text}>
                             {item.title}
                         </Text>
                     </View>)}
                 </ScrollView>}
                 <View style={Styles.section.main}>
                     <View style={Styles.section.mainChild}>
-                        <Text style={Styles.section.year}>{animeInfo?.year} г.</Text>
-                        <Text style={RatingColor(animeInfo.myAnimeListScore)}>{parseFloat(animeInfo?.myAnimeListScore)}</Text>
+                        <Text style={[Styles.section.year, themeStyles.text]}>{animeInfo?.year} г.</Text>
+                        <Text style={RatingColor(animeInfo.myAnimeListScore)}>{parseFloat(animeInfo?.myAnimeListScore).toFixed(1)}</Text>
                     </View>
                 </View>
             </View>
@@ -43,7 +46,6 @@ const AnimeCard = React.memo( ({animeInfo}) => {
 const Styles = StyleSheet.create({
     view: {
         borderRadius: 19,
-        backgroundColor: "#D2D2D2",
         marginHorizontal: 5,
         marginVertical: 10,
     },
@@ -62,7 +64,6 @@ const Styles = StyleSheet.create({
         marginHorizontal: 5,
         marginTop: 5,
         padding: 3,
-        backgroundColor: "#5caf64",
         borderRadius: 5,
         display: "flex",
         justifyContent: "center",

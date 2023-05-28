@@ -1,10 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import InDevelopment from "../components/InDevelopment";
+import {useTheme} from "../hooks/useTheme";
 
 const HomePage = () => {
+    const {themeStyles} = useTheme();
     return (
-        <View style={Styles.container}>
+        <View style={[Styles.container, themeStyles.background]}>
             <InDevelopment/>
         </View>
     );

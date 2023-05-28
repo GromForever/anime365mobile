@@ -5,12 +5,14 @@ import {useCallback, useState} from "react";
 import Separator from "./Separator";
 import AnimeCard from "./AnimeCard";
 import AnimeListHeader from "./AnimeListHeader";
+import LoadingError from "../pages/LoadingError";
+import LoadingComponent from "./LoadingComponent";
 
 
 let debounceTimeout;
 const AnimeList = () => {
     const navigation = useNavigation();
-    const [anime, isLoading, setQuery, onEndReached, onRefresh, isRefreshing] = useFetchAnimeByQuery();
+    const [anime, isLoading, setQuery, onEndReached, onRefresh, isRefreshing, error] = useFetchAnimeByQuery();
     const [searchTerm, setSearchTerm] = useState("");
     const InputChangedHandler = (value) => {
         const searchText = value;
@@ -39,8 +41,11 @@ const AnimeList = () => {
 
     return (
         <View>
+            {isLoading && <LoadingComponent/>}
+                <AnimeListHeader onChange={InputChangedHandler} searchValue={searchTerm}/>
+            {error ? <LoadingError RefreshFunc={onRefresh}></LoadingError> :
                 <FlatList
-                    ListHeaderComponent={<AnimeListHeader onChange={InputChangedHandler} searchValue={searchTerm}/>}
+                    style={Styles.margin}
                     onRefresh={onRefresh}
                     refreshing={isRefreshing}
                     data={anime}
@@ -50,6 +55,8 @@ const AnimeList = () => {
                     onEndReached={onEndReached}
                     onEndReachedThreshold={0.25}
                     renderItem={renderItem}/>
+            }
+
         </View>
     );
 };
@@ -58,9 +65,8 @@ const Styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width / 2
     },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold"
+    margin: {
+        marginTop: 20
     }
 })
 

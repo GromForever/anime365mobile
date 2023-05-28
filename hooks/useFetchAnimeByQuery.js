@@ -7,14 +7,12 @@ export default function useFetchAnimeByQuery() {
     const [isLoading, setIsLoading] = useState(true)
     const [query, setQuery] = useState("");
     const [isRefreshing, setIsRefreshing] = useState(false)
-    const navigation = useNavigation()
+    const [error, setError] = useState(null)
 
     useEffect(() => {
             setIsLoading(true)
             FetchAnimeAsync(0, 10, query).catch(error => {
-                if (error.message !== "ServerError") {
-                    navigation.navigate("InternetError")
-                }
+                setError(error)
             }).then(data => {
                 setAnime(data)
                 setIsLoading(false)
@@ -31,10 +29,19 @@ export default function useFetchAnimeByQuery() {
     }
 
     async function onRefresh() {
-        setIsRefreshing(true)
-        const anime = await FetchAnimeAsync(0,10, "");
-        setAnime(anime);
-        setIsRefreshing(false)
+        try {
+            setIsLoading(true)
+            setIsRefreshing(true)
+            const anime = await FetchAnimeAsync(0,10, "");
+            setAnime(anime);
+            setIsRefreshing(false)
+            setIsLoading(false)
+        } catch (e) {
+            setError(e.message)
+        } finally {
+            setIsRefreshing(false)
+            setIsLoading(false)
+        }
     }
-    return [anime, isLoading, setQuery, onEndReached, onRefresh, isRefreshing]
+    return [anime, isLoading, setQuery, onEndReached, onRefresh, isRefreshing, error]
 }

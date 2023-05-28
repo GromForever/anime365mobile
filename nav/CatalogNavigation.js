@@ -2,7 +2,7 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import CatalogPage from "../pages/CatalogPage";
 import OneAnimePage from "../pages/OneAnimePage";
 import CatalogFilterPage from "../pages/CatalogFilterPage";
-import InternetErrorPage from "../pages/InternetErrorPage";
+import InternetErrorPage from "../pages/LoadingError";
 
 const Stack = createNativeStackNavigator();
 const CatalogNavigation = () => {

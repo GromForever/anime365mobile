@@ -2,14 +2,16 @@ import React from 'react';
 import {Platform, StyleSheet, View, Text} from "react-native";
 import {Image} from "expo-image";
 import error from "../assets/Icon/Errors/error4.png"
+import {useTheme} from "../hooks/useTheme";
 
 const InDevelopment = () => {
+    const {themeStyles} = useTheme();
     return (
-        <View style={Styles.container}>
+        <View style={[Styles.container, themeStyles.background]}>
             <Image style={Styles.image} source={error}/>
-            <Text style={Styles.title}>В разработке</Text>
-            <Text style={Styles.description}>Данный функционал приложения в разработке, запаситесь терпением!</Text>
-            <Text style={Styles.deviceInfo}>{Platform.Version}</Text>
+            <Text style={[Styles.title, themeStyles.text]}>В разработке</Text>
+            <Text style={[Styles.description, themeStyles.text]}>Данный функционал приложения в разработке, запаситесь терпением!</Text>
+            <Text style={[Styles.deviceInfo, themeStyles.text]}>{Platform.Version}</Text>
         </View>
     );
 };
