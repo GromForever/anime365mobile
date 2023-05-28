@@ -3,6 +3,7 @@ import {ScrollView, StyleSheet, Text, View, Image as NativeImage} from "react-na
 import {Image} from "expo-image"
 import badImage from "../assets/Icon/Errors/error1.png";
 import {useTheme} from "../hooks/useTheme";
+import {genresIcons} from "../common/genresIcons";
 
 const AnimeCard = React.memo( ({animeInfo}) => {
     const [imageUrl, setImageUrl] = useState(animeInfo.posterUrl);
@@ -27,9 +28,9 @@ const AnimeCard = React.memo( ({animeInfo}) => {
                 <Text numberOfLines={1} style={[Styles.title, themeStyles.text]}>{animeInfo?.titles?.ru}</Text>
                 <Text numberOfLines={1} style={[Styles.subTitle, themeStyles.text]}>{animeInfo?.titles?.romaji}</Text>
                 {<ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-                    {animeInfo.genres?.map((item) => <View key={item.id} style={[Styles.genresBlock, themeStyles.buttonBlock]}>
-                        <Text style={themeStyles.text}>
-                            {item.title}
+                    {animeInfo.genres?.map((item) => <View key={item.id} style={Styles.genresBlock}>
+                        <Text style={[Styles.genreText,themeStyles.text]}>
+                            {genresIcons.consts[item.id].icon}
                         </Text>
                     </View>)}
                 </ScrollView>}
@@ -61,13 +62,17 @@ const Styles = StyleSheet.create({
         fontWeight: "bold",
     },
     genresBlock: {
-        marginHorizontal: 5,
+        marginHorizontal: 1,
         marginTop: 5,
         padding: 3,
         borderRadius: 5,
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
+    },
+    genreText: {
+      fontFamily: 'customicons',
+      fontSize: 20
     },
     subTitle: {
         fontSize: 14,
