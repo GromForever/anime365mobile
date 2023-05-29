@@ -19,10 +19,12 @@ const ProfilePage = observer(() => {
 
 const styles = StyleSheet.create({
     container: {
-        height: "100%"
+        height: "100%",
+        width: "100%"
     },
     saveView: {
-        height: "100%"
+        height: "100%",
+        width: "100%"
     }
 })
 
