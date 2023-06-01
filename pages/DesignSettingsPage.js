@@ -1,6 +1,5 @@
 import React from 'react';
-import {Text, View} from "react-native";
-import {Switch} from "react-native-gesture-handler";
+import {Text, View, StyleSheet} from "react-native";
 import {observer} from "mobx-react-lite";
 import {settingsStore} from "../store";
 import {useTheme} from "../hooks/useTheme";
@@ -16,13 +15,23 @@ const DesignSettingsPage = observer(() => {
         toggleTheme();
     }
     return (
-        <View style={[themeStyles.background]}>
-           <Text style={[themeStyles.text]}>Настройки внешнего вида приложения!</Text>
+        <View style={[styles.container,themeStyles.background]}>
+           <Text style={[styles.title,themeStyles.text]}>Настройки внешнего вида приложения</Text>
             <SettingsGroup>
                 <SwitchSettingsItem onSwitchValueChanged={HandleDarkModeSwitchChanged} title={"Темная тема"} switchValue={settingsStore.theme === "dark"}/>
             </SettingsGroup>
         </View>
     );
 });
+
+const styles = StyleSheet.create({
+    title: {
+        textAlign: "center",
+        fontSize: 16
+    },
+    container: {
+        height: "100%"
+    }
+})
 
 export default DesignSettingsPage;

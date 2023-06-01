@@ -33,16 +33,18 @@ const style = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: "grey",
         borderStyle: "solid",
+        paddingVertical: 9
     },
     container: {
         display: "flex",
         flexDirection: "row",
-        width: "100%"
+        width: "100%",
     },
     icon: {
         flex: 0,
         paddingLeft: 3,
-        paddingRight: 5
+        paddingRight: 5,
+        paddingVertical: 9
     },
     title: {
         fontFamily: 'roboto-regular',
