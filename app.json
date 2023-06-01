@@ -15,6 +15,14 @@
       "**/*",
       "assets/fonts/*"
     ],
+    "plugins": [
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow anime365 to access your microphone."
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true
     },

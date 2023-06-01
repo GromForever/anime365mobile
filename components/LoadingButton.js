@@ -5,7 +5,7 @@ import LoadingComponent from "./LoadingComponent";
 const LoadingButton = ({children, wrapperStyle, onPress, textWhenLoading, loading}) => {
     return (
         <Pressable onPress={onPress}>
-            <View style={wrapperStyle ? wrapperStyle : defaultWrapperStyle.wrapper}>
+            <View style={[defaultWrapperStyle.wrapper, wrapperStyle]}>
                 {loading ?
                     <View>
                         <LoadingComponent/>
@@ -24,6 +24,7 @@ const defaultWrapperStyle = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        borderRadius: 6
     }
 })
 

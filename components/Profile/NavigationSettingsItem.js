@@ -4,7 +4,7 @@ import {useNavigation} from "@react-navigation/native";
 import {MaterialIcons} from "@expo/vector-icons";
 import {useTheme} from "../../hooks/useTheme";
 
-const SettingsItem = ({icon, route, title}) => {
+const NavigationSettingsItem = ({icon, route, title}) => {
     const {themeStyles} = useTheme()
     const navigation = useNavigation();
     return (
@@ -50,4 +50,4 @@ const style = StyleSheet.create({
     }
 })
 
-export default SettingsItem;
+export default NavigationSettingsItem;

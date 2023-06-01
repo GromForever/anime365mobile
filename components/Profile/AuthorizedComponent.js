@@ -5,9 +5,11 @@ import { EvilIcons } from '@expo/vector-icons';
 import {userStore} from "../../store";
 import {useCallback} from "react";
 import Communications from 'react-native-communications';
+import {useTheme} from "../../hooks/useTheme";
 
 const AuthorizedComponent = observer(() => {
     const {isPremium, userData} = userStore
+    const {themeStyles} = useTheme();
     const linkToProfile = useCallback(() => {
         Communications.web("https://smotret-anime.com/users/profile")
     })
@@ -22,8 +24,8 @@ const AuthorizedComponent = observer(() => {
                 </Pressable>
             </View>
             <Image style={styles.avatarImage} source={avatar}/>
-            <Text style={styles.nickname}>{userData.name}</Text>
-            <Text style={isPremium ? styles.premium : styles.noPremium}>{isPremium ? "Premium" : "Standard"}</Text>
+            <Text style={[styles.nickname, themeStyles.text]}>{userData.name}</Text>
+            <Text style={[themeStyles.text,isPremium ? styles.premium : styles.noPremium]}>{isPremium ? "Premium" : "Standard"}</Text>
         </View>
     );
 });
@@ -31,7 +33,6 @@ const AuthorizedComponent = observer(() => {
 const styles = StyleSheet.create({
     container: {
         display: "flex",
-        height: "100%",
         width: "100%",
         flexDirection: "column",
         alignItems: "center"
@@ -60,10 +61,9 @@ const styles = StyleSheet.create({
     },
     premium: {
         color: "#ffd700",
-        fontSize: 14,
+        fontSize: 16,
     },
     noPremium: {
-        color: "black",
         fontSize: 16
     },
 })

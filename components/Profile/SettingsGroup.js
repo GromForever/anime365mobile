@@ -1,16 +1,19 @@
 import React from 'react';
 import {FlatList, StyleSheet, View} from "react-native";
-import SettingsItem from "./SettingsItem";
+import NavigationSettingsItem from "./NavigationSettingsItem";
 import {useTheme} from "../../hooks/useTheme";
 
-const SettingsGroup = ({data}) => {
+const SettingsGroup = ({data, children}) => {
     const {themeStyles} = useTheme();
     return (
         <View style={style.container}>
             <View style={[style.wrapper, themeStyles.settingsBlock]}>
-                <FlatList ItemSeparatorComponent={SettingsSeparator} scrollEnabled={false} data={data} renderItem={({item}) => {
-                    return <SettingsItem key={item.title} route={item.route} title={item.title} icon={item.icon}/>
-                }}/>
+                {data && <FlatList ItemSeparatorComponent={SettingsSeparator} scrollEnabled={false} data={data}
+                           renderItem={({item}) => {
+                               return <NavigationSettingsItem key={item.title} route={item.route} title={item.title}
+                                                              icon={item.icon}/>
+                           }}/>}
+                {children}
             </View>
         </View>
     );
