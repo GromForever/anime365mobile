@@ -8,7 +8,7 @@ import Communications from 'react-native-communications';
 import {useTheme} from "../../hooks/useTheme";
 
 const AuthorizedComponent = observer(() => {
-    const {isPremium, userData} = userStore
+    const {userData} = userStore
     const {themeStyles} = useTheme();
     const linkToProfile = useCallback(() => {
         Communications.web("https://smotret-anime.com/users/profile")
@@ -25,7 +25,7 @@ const AuthorizedComponent = observer(() => {
             </View>
             <Image style={styles.avatarImage} source={avatar}/>
             <Text style={[styles.nickname, themeStyles.text]}>{userData.name}</Text>
-            <Text style={[themeStyles.text,isPremium ? styles.premium : styles.noPremium]}>{isPremium ? "Premium" : "Standard"}</Text>
+            <Text style={[themeStyles.text,userData.isPremium ? styles.premium : styles.noPremium]}>{userData.isPremium ? "Premium" : "Standard"}</Text>
         </View>
     );
 });

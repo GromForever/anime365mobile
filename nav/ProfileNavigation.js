@@ -3,6 +3,7 @@ import ProfilePage from "../pages/ProfilePage";
 import DesignSettingsPage from "../pages/DesignSettingsPage";
 import {useTheme} from "../hooks/useTheme";
 import AuthScreen from "../pages/AuthScreen";
+import SubscriptionSettingsScreen from "../pages/SubscriptionSettingsScreen";
 
 const Stack = createNativeStackNavigator();
 export const ProfileNavigation = () => {
@@ -12,6 +13,7 @@ export const ProfileNavigation = () => {
             <Stack.Screen name={"ProfileMain"} component={ProfilePage} options={{headerShown: false}}/>
             <Stack.Screen name={"designSettings"} component={DesignSettingsPage} options={({route}) => ({title: route.params.title})}/>
             <Stack.Screen name={"authScreen"} component={AuthScreen} options={{title: "Авторизация"}}/>
+            <Stack.Screen name={"subscriptionSettings"} component={SubscriptionSettingsScreen} options={({route}) => ({title: route.params.title})}></Stack.Screen>
         </Stack.Navigator>
     )
 }
