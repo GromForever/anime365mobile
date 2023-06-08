@@ -1,16 +1,17 @@
 import {useEffect, useState} from "react";
 import {fetchTranslationsForEpisode} from "../api/episodes";
 
-export const useFetchTranslations = (episodeId) => {
+export const useFetchTranslations = () => {
     const [translations, setTranslations] = useState(null);
     const [error, setError] = useState(null)
+    const [selectedEpisode, setSelectedEpisode] = useState(null);
     const [isLoading, setLoading] = useState(false)
 
     useEffect(() => {
-        RefreshTranslations();
-    }, [episodeId])
+        fetch(selectedEpisode);
+    }, [selectedEpisode])
 
-    function RefreshTranslations () {
+    function fetch (episodeId) {
         setError(null);
         setLoading(true)
         fetchTranslationsForEpisode(episodeId)
@@ -27,5 +28,5 @@ export const useFetchTranslations = (episodeId) => {
                 setLoading(false)
             })
     }
-    return {translations, error, isLoading, RefreshTranslations}
+    return {translations, error, isLoading, fetch, selectedEpisode, setSelectedEpisode}
 }

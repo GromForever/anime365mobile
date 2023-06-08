@@ -3,6 +3,7 @@ import CatalogPage from "../pages/CatalogPage";
 import OneAnimePage from "../pages/OneAnimePage";
 import CatalogFilterPage from "../pages/CatalogFilterPage";
 import InternetErrorPage from "../pages/LoadingError";
+import WatchPage from "../pages/WatchPage";
 
 const Stack = createNativeStackNavigator();
 const CatalogNavigation = () => {
@@ -11,6 +12,7 @@ const CatalogNavigation = () => {
             <Stack.Screen options={{headerShown: false}} name={"AnimeList"} component={CatalogPage}/>
             <Stack.Screen options={{headerShown: false}} name={"InternetError"} component={InternetErrorPage}/>
             <Stack.Screen name={"OneAnime"} options={({route}) => ({title: route.params.title, headerShown: false})} component={OneAnimePage}/>
+            <Stack.Screen name={"WatchPage"} component={WatchPage}/>
             <Stack.Screen name={"CatalogFilter"} component={CatalogFilterPage}/>
         </Stack.Navigator>
     );

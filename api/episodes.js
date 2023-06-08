@@ -8,8 +8,6 @@ export const fetchTranslationsForEpisode = async (episodeId) => {
         const result = await fetch(`https://smotret-anime.online/api/episodes/${episodeId}`, {
             headers: ApiHeaders
         })
-        if (result.statusCode !== 200)
-            return null
 
         const translations = await result.json()
         return translations.data;

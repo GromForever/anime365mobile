@@ -41,13 +41,14 @@ const AnimeList = () => {
 
     return (
         <View>
-            {isLoading && <LoadingComponent/>}
-                <AnimeListHeader onChange={InputChangedHandler} searchValue={searchTerm}/>
-            {error ? <LoadingError RefreshFunc={onRefresh}></LoadingError> :
+            {isLoading ? <LoadingComponent/> :
+            error ? <LoadingError RefreshFunc={onRefresh}></LoadingError> :
                 <FlatList
+                    ListHeaderComponent={<AnimeListHeader onChange={InputChangedHandler} searchValue={searchTerm}/>}
                     style={Styles.margin}
                     onRefresh={onRefresh}
                     refreshing={isRefreshing}
+                    stickyHeaderIndices={[0]}
                     data={anime}
                     ItemSeparatorComponent={Separator}
                     numColumns={2}

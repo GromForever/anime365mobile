@@ -4,3 +4,5 @@ export const ApiHeaders = {
 }
 
 export const ApiMeLink = "https://smotret-anime.com/api/me"
+
+

@@ -1,11 +1,12 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, View, Text} from "react-native";
+import {StyleSheet, View} from "react-native";
 import InDevelopment from "../components/InDevelopment";
 import {useTheme} from "../hooks/useTheme";
-import AnimePlayer from "../components/WatchPage/AnimePlayer";
+import {cookies, getResponseFromAnimeSite} from "../api/webPage";
 
 const HomePage = () => {
     const {themeStyles} = useTheme();
+    getResponseFromAnimeSite();
     return (
         <View style={[Styles.container, themeStyles.background]}>
             {<InDevelopment/>}

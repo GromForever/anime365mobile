@@ -1,7 +1,7 @@
 import {Pressable, ScrollView, StyleSheet, Text, View, Image as NativeImage} from "react-native";
 import {Image} from "expo-image"
 import LoadingComponent from "../components/LoadingComponent";
-import {useRoute} from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 import useFetchOneAnime from "../hooks/useFetchOneAnime";
 import {LinearGradient} from "expo-linear-gradient";
 import {AntDesign, Feather} from '@expo/vector-icons';
@@ -14,6 +14,7 @@ const OneAnimePage = () => {
     const [anime, isLoading] = useFetchOneAnime(id)
     const [imageUrl, setImageUrl] = useState(null)
     const [isOpened, setIsOpened] = useState(false)
+    const navigation = useNavigation();
 
     const {themeStyles, theme} = useTheme();
 
@@ -76,10 +77,10 @@ const OneAnimePage = () => {
             <View style={styles.episodesContainer}>
                 <View style={styles.episodesBlock}>
                 {anime && anime.episodes && anime.episodes.map((item,index) => {
-                    return <View key={index} style={[styles.episode, themeStyles.buttonBlock]}>
+                    return <Pressable onPress={() => navigation.navigate("WatchPage", {animeId: anime.id, episode: item.episodeInt})} key={index} style={[styles.episode, themeStyles.buttonBlock]}>
                         <AntDesign style={{paddingRight: 5}} name="playcircleo" size={24} color={theme === "dark" ? "black" : "white"} />
                         <Text style={[{fontSize: 16}, themeStyles.text]}>{item.episodeFull}</Text>
-                    </View>
+                    </Pressable>
                 })}
                 </View>
             </View>
