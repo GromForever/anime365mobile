@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import {FetchOneAnimeAsync} from "../api/series";
-import {fetchTranslationsForEpisode} from "../api/episodes";
+import {fetchTranslationsForEpisode, fetchTranslationStreams} from "../api/episodes";
 import {userStore} from "../store";
 
-export const useAnimePlayerData = (animeId, episodeNumber) => {
+export const useAnimePlayerData = (animeId, episodeId) => {
     const [videoSource, setVideoSource] = useState(null);
     const [translations, setTranslations] = useState([]);
     const [selectedTranslation, setSelectedTranslation] = useState(null);
@@ -15,7 +15,7 @@ export const useAnimePlayerData = (animeId, episodeNumber) => {
         async function fetchData() {
             try {
                 const seriesData = await FetchOneAnimeAsync(animeId)
-                const targetEpisode = seriesData.episodes.find((episode) => episode.episodeInt == episodeNumber);
+                const targetEpisode = seriesData.episodes.find((episode) => episode.id == episodeId);
                 if (!targetEpisode) {
                     throw new Error('Эпизод не найден');
                 }
@@ -30,31 +30,27 @@ export const useAnimePlayerData = (animeId, episodeNumber) => {
                 }
                 setSelectedTranslation(voiceRuTranslation);
 
-                const translationResponse = await fetch(`https://smotret-anime.com/api/translations/embed/${voiceRuTranslation.id}?access_token=${userStore.token}`);
-                const translationTemp = await translationResponse.json();
-                const translationData = translationTemp.data;
-                setStreamData(translationData)
-                const streamSource = translationData.stream[0].urls[0];
-                setVideoSource(streamSource);
+                const translationResponse = await fetchTranslationStreams(voiceRuTranslation.id)
+                setStreamData(translationResponse)
+                setVideoSource(translationResponse.stream[0].urls[0]);
             } catch (error) {
                 console.error('Ошибка при получении данных:', error);
             }
         }
         fetchData();
-    }, [animeId, episodeNumber]);
+    }, [animeId, episodeId]);
 
     const selectTranslation = async (translation, videoQuality, skipNotification = false) => {
         try {
-            const translationResponse = await fetch(`https://smotret-anime.com/api/translations/embed/${translation.id}?access_token=${userStore.token}`);
-            const translationData = await translationResponse.json();
+            const translationResponse = await fetchTranslationStreams(translation.id)
 
-            const availableQualities = translationData.data.stream.map((stream) => stream.height);
+            const availableQualities = translationResponse.stream.map((stream) => stream.height);
             if (!availableQualities.includes(videoQuality)) {
                 videoQuality = availableQualities[0]; // Если выбранного качества нет, устанавливаем первое доступное
             }
             setQuality(videoQuality);
 
-            const streamSource = translationData.data.stream.find((stream) => stream.height === videoQuality);
+            const streamSource = translationResponse.stream.find((stream) => stream.height === videoQuality);
             setVideoSource(streamSource.urls[0]);
             setSelectedTranslation(translation);
             if (!skipNotification) {

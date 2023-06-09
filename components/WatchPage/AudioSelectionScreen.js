@@ -1,12 +1,12 @@
 import React, {useMemo, useState} from 'react';
-import {View, Text, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, StyleSheet, ScrollView} from 'react-native';
 
 export default function AudioSelectionScreen({ route, navigation }) {
     const {audioTracks, onAudioSelect} = route.params;
     const [searchText, setSearchText] = useState('');
 
-    const filteredAudioTracks = useMemo(audioTracks.filter((audioTrack) =>
-        audioTrack.label.toLowerCase().includes(searchText.toLowerCase())
+    const filteredAudioTracks = useMemo(() => audioTracks.filter((audioTrack) =>
+        audioTrack.authorsSummary.toLowerCase().includes(searchText.toLowerCase())
     ), [searchText, audioTracks]);
 
     const handleAudioSelect = (audioTrack) => {
@@ -15,7 +15,7 @@ export default function AudioSelectionScreen({ route, navigation }) {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
             <TextInput
                 style={styles.searchInput}
                 onChangeText={setSearchText}
@@ -24,20 +24,20 @@ export default function AudioSelectionScreen({ route, navigation }) {
             />
             {filteredAudioTracks.map((audioTrack) => (
                 <TouchableOpacity
-                    key={audioTrack.value}
+                    key={audioTrack.id}
                     style={styles.audioTrack}
                     onPress={() => handleAudioSelect(audioTrack)}
                 >
-                    <Text style={styles.audioTrackText}>{audioTrack.label}</Text>
+                    <Text style={styles.audioTrackText}>{audioTrack.authorsSummary + ` ${audioTrack.type}`}</Text>
                 </TouchableOpacity>
             ))}
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        display: "flex",
         alignItems: 'center',
         justifyContent: 'center',
     },

@@ -77,7 +77,7 @@ const OneAnimePage = () => {
             <View style={styles.episodesContainer}>
                 <View style={styles.episodesBlock}>
                 {anime && anime.episodes && anime.episodes.map((item,index) => {
-                    return <Pressable onPress={() => navigation.navigate("WatchPage", {animeId: anime.id, episode: item.episodeInt})} key={index} style={[styles.episode, themeStyles.buttonBlock]}>
+                    return <Pressable onPress={() => navigation.navigate("WatchPage", {animeId: anime.id, episode: item.id, episodes: anime.episodes})} key={index} style={[styles.episode, themeStyles.buttonBlock]}>
                         <AntDesign style={{paddingRight: 5}} name="playcircleo" size={24} color={theme === "dark" ? "black" : "white"} />
                         <Text style={[{fontSize: 16}, themeStyles.text]}>{item.episodeFull}</Text>
                     </Pressable>

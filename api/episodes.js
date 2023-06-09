@@ -23,8 +23,6 @@ export const fetchTranslationStreams = async (episodeId) => {
         const result = await fetch(`https://smotret-anime.com/api/translations/embed/${episodeId}?access_token=${userStore.token}`, {
             headers: ApiHeaders
         })
-        if (result.statusCode !== 200)
-            throw new Error("Для запроса информации для скачивания или просмотра необходимо наличие подписки или ваша сессия недействительна!")
         const data = await result.json();
         return data.data
     }
