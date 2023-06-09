@@ -1,10 +1,10 @@
 import React from 'react';
 import {Button, Text, TextInput, View, StyleSheet} from "react-native";
-import {useAuth} from "../hooks/useAuth";
-import LoadingButton from "../components/LoadingButton";
-import {useTheme} from "../hooks/useTheme";
+import {useAuth} from "../../hooks/useAuth";
+import LoadingButton from "../LoadingButton";
+import {useTheme} from "../../hooks/useTheme";
 import {useNavigation} from "@react-navigation/native";
-import {userStore} from "../store";
+import {userStore} from "../../store";
 
 const AuthScreen = () => {
     const {themeStyles} = useTheme();

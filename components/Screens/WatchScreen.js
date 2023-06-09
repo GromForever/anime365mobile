@@ -1,8 +1,8 @@
 import {Pressable, ScrollView, Text, View} from "react-native";
 import React, {useState} from "react";
-import AnimePlayer from "../components/WatchPage/AnimePlayer";
+import AnimePlayer from "../WatchPage/AnimePlayer";
 import {useNavigation, useRoute} from "@react-navigation/native";
-const WatchPage = () => {
+const WatchScreen = () => {
     const params = useRoute().params
 
     return (

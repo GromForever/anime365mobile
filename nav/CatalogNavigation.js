@@ -1,10 +1,10 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import CatalogPage from "../pages/CatalogPage";
-import OneAnimePage from "../pages/OneAnimePage";
+import OneAnimePage from "../components/Screens/OneAnimeScreen";
 import CatalogFilterPage from "../pages/CatalogFilterPage";
-import InternetErrorPage from "../pages/LoadingError";
-import WatchPage from "../pages/WatchPage";
-import AudioSelectionScreen from "../components/WatchPage/AudioSelectionScreen";
+import InternetErrorPage from "../components/LoadingError";
+import WatchPage from "../components/Screens/WatchScreen";
+import AudioSelectionScreen from "../components/Screens/AudioSelectionScreen";
 
 const Stack = createNativeStackNavigator();
 const CatalogNavigation = () => {

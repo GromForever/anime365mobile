@@ -5,7 +5,7 @@ import {useCallback, useState} from "react";
 import Separator from "./Separator";
 import AnimeCard from "./AnimeCard";
 import AnimeListHeader from "./AnimeListHeader";
-import LoadingError from "../pages/LoadingError";
+import LoadingError from "./LoadingError";
 import LoadingComponent from "./LoadingComponent";
 
 

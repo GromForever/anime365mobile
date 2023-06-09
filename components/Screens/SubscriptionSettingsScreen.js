@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Text, Pressable} from "react-native";
-import {useTheme} from "../hooks/useTheme";
-import {userStore} from "../store";
+import {useTheme} from "../../hooks/useTheme";
+import {userStore} from "../../store";
 import Communications from 'react-native-communications';
 
 const SubscriptionSettingsScreen = () => {

@@ -1,12 +1,12 @@
 import React from 'react';
 import {Text, View, StyleSheet} from "react-native";
 import {observer} from "mobx-react-lite";
-import {settingsStore} from "../store";
-import {useTheme} from "../hooks/useTheme";
-import SwitchSettingsItem from "../components/Profile/SwitchSettingsItem";
-import SettingsGroup from "../components/Profile/SettingsGroup";
+import {settingsStore} from "../../store";
+import {useTheme} from "../../hooks/useTheme";
+import SwitchSettingsItem from "../Profile/SwitchSettingsItem";
+import SettingsGroup from "../Profile/SettingsGroup";
 
-const DesignSettingsPage = observer(() => {
+const DesignSettingsScreen = observer(() => {
     const {themeStyles, toggleTheme} = useTheme();
     const HandleDarkModeSwitchChanged = (value) => {
         settingsStore.setTheme(value ? "dark" : "light")

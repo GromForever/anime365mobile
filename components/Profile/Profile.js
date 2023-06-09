@@ -3,7 +3,7 @@ import {userStore} from "../../store";
 import {observer} from "mobx-react-lite";
 import AuthorizedComponent from "./AuthorizedComponent";
 import NotAuthorizedComponent from "./NotAuthorizedComponent";
-import AuthScreen from "../../pages/AuthScreen";
+import AuthScreen from "../Screens/AuthScreen";
 
 const Profile = observer(() => {
     return (

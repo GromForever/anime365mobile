@@ -1,9 +1,9 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import ProfilePage from "../pages/ProfilePage";
-import DesignSettingsPage from "../pages/DesignSettingsPage";
+import DesignSettingsPage from "../components/Screens/DesignSettingsScreen";
 import {useTheme} from "../hooks/useTheme";
-import AuthScreen from "../pages/AuthScreen";
-import SubscriptionSettingsScreen from "../pages/SubscriptionSettingsScreen";
+import AuthScreen from "../components/Screens/AuthScreen";
+import SubscriptionSettingsScreen from "../components/Screens/SubscriptionSettingsScreen";
 
 const Stack = createNativeStackNavigator();
 export const ProfileNavigation = () => {

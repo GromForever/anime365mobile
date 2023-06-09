@@ -1,15 +1,15 @@
 import {Pressable, ScrollView, StyleSheet, Text, View, Image as NativeImage} from "react-native";
 import {Image} from "expo-image"
-import LoadingComponent from "../components/LoadingComponent";
+import LoadingComponent from "../LoadingComponent";
 import {useNavigation, useRoute} from "@react-navigation/native";
-import useFetchOneAnime from "../hooks/useFetchOneAnime";
+import useFetchOneAnime from "../../hooks/useFetchOneAnime";
 import {LinearGradient} from "expo-linear-gradient";
 import {AntDesign, Feather} from '@expo/vector-icons';
 import {useCallback, useEffect, useState} from "react";
-import badImage from "../assets/Icon/Errors/error1.png"
-import {useTheme} from "../hooks/useTheme";
+import badImage from "../../assets/Icon/Errors/error1.png"
+import {useTheme} from "../../hooks/useTheme";
 
-const OneAnimePage = () => {
+const OneAnimeScreen = () => {
     const {id} = useRoute().params;
     const [anime, isLoading] = useFetchOneAnime(id)
     const [imageUrl, setImageUrl] = useState(null)
