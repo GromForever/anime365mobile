@@ -3,6 +3,7 @@ import {GetInfoAboutUser, LoginRequest} from "../api/user";
 import AsyncStorageNative from "@react-native-async-storage/async-storage/src/AsyncStorage.native";
 import UserHelper from "../common/userHelper";
 import {Platform} from "react-native";
+import {LoginResponse} from "../types/api/series";
 
 
 export default class UserStore {
@@ -53,14 +54,15 @@ export default class UserStore {
 
     async login(login, password) {
         const tokenOrError = await LoginRequest(login, password);
-        if (tokenOrError.message === undefined) {
-            const infoAboutUser = await GetInfoAboutUser(tokenOrError)
+        if ("data" in tokenOrError) {
+            const authData = tokenOrError as LoginResponse
+            const infoAboutUser = await GetInfoAboutUser(authData.data.access_token)
             runInAction(() => {
-                this.token = tokenOrError;
+                this.token = authData.data.access_token;
                 this.userData = infoAboutUser;
                 this.isLogined = true;
             })
-            await AsyncStorageNative.setItem("access_token", tokenOrError)
+            await AsyncStorageNative.setItem("access_token", authData.data.access_token)
             return true;
         }
         return false;

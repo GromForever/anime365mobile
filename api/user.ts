@@ -1,13 +1,14 @@
+import {ApiMeResponse, LoginResponse} from "../types/api/series";
+import {ErrorResponse} from "../types/api/series";
+
 export const LoginRequest = async (login, password) => {
     const response = await fetch(`https://smotret-anime.online/api/login?app=universal&email=${login}&password=${password}`)
     if (!response.ok) {
         throw new Error("Произошла ошибка при попытке авторизации, повторите позже.");
     }
-    const json = await response.json();
-    if (json.error !== undefined)  {
-        return json.error
-    }
-    return json.data.access_token;
+    const json : LoginResponse | ErrorResponse = await response.json();
+    console.log(json)
+    return json
 }
 
 export const GetInfoAboutUser = async (token) => {
@@ -15,6 +16,6 @@ export const GetInfoAboutUser = async (token) => {
     if (response.status === 500) {
         throw new Error("Ошибка сервера")
     }
-    const json = await response.json();
+    const json : ApiMeResponse = await response.json();
     return json.data;
 }

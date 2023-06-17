@@ -1,15 +1,14 @@
-import {Pressable, ScrollView, Text, View} from "react-native";
-import React, {useState} from "react";
+import {ScrollView} from "react-native";
 import AnimePlayer from "../WatchPage/AnimePlayer";
-import {useNavigation, useRoute} from "@react-navigation/native";
+import {useRoute} from "@react-navigation/native";
 const WatchScreen = () => {
     const params = useRoute().params
 
     return (
         <ScrollView style={{height: "100%", width: "100%"}}>
-            <AnimePlayer animeId={params.episodes} episodeId={episodeNumber}/>
+            <AnimePlayer animeId={params.animeId} episodeId={params.episodeId}/>
         </ScrollView>
     )
 };
 
-export default WatchPage;
+export default WatchScreen;

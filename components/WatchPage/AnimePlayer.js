@@ -20,7 +20,8 @@ const AnimePlayer = ({animeId, episodeId, onVideoChanged}) => {
     } = useAnimePlayerData(animeId, episodeId);
 
     const handleTranslationSelect = (translation) => {
-        onVideoChanged(selectedTranslation);
+        if (onVideoChanged)
+            onVideoChanged(translation)
         selectTranslation(translation, quality);
     };
 

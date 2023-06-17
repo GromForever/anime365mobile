@@ -2,11 +2,11 @@ import React from 'react';
 import {StyleSheet, View} from "react-native";
 import InDevelopment from "../components/InDevelopment";
 import {useTheme} from "../hooks/useTheme";
-import {cookies, getResponseFromAnimeSite} from "../api/webPage";
+import {main} from "../api/webPage";
 
 const HomePage = () => {
     const {themeStyles} = useTheme();
-    getResponseFromAnimeSite();
+    main().then(data => console.log("Успешно")).catch(e => `Произошла ошибка: ${e.message}`)
     return (
         <View style={[Styles.container, themeStyles.background]}>
             {<InDevelopment/>}
