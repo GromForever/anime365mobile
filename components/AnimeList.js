@@ -10,7 +10,7 @@ import LoadingComponent from "./LoadingComponent";
 
 
 let debounceTimeout;
-const AnimeList = () => {
+const AnimeList = (callback, deps) => {
     const navigation = useNavigation();
     const [anime, isLoading, setQuery, onEndReached, onRefresh, isRefreshing, error] = useFetchAnimeByQuery();
     const [searchTerm, setSearchTerm] = useState("");
@@ -30,7 +30,7 @@ const AnimeList = () => {
                     <AnimeCard animeInfo={item}/>
                         </View>
                 </TouchableOpacity>)
-    })
+    }, [])
 
     function debounce(func, delay) {
         return function() {

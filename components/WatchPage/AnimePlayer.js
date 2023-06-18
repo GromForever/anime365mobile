@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Pressable} from "react-native";
-import {Video} from "expo-av";
+import {View, StyleSheet, Text, TouchableOpacity, Pressable, Image} from "react-native";
+import Video from "react-native-video";
 import {useAnimePlayerData} from "../../hooks/useAnimePlayerData";
 import blackPoster from "../../assets/common/blackOnePixel.png"
 import {useNavigation, useRoute} from "@react-navigation/native";
@@ -35,7 +35,7 @@ const AnimePlayer = ({animeId, episodeId, onVideoChanged}) => {
     const renderQualities = () => {
         if (!selectedTranslation) return null;
         if (streamData) {
-            const availableQualities = streamData.stream.map((stream) => stream.height);
+            const availableQualities = streamData.data.stream.map((stream) => stream.height);
             return availableQualities.map((videoQuality) => (
                 <TouchableOpacity key={videoQuality} onPress={() => handleQualitySelect(videoQuality)}>
                     <Text>{videoQuality}</Text>
@@ -47,15 +47,18 @@ const AnimePlayer = ({animeId, episodeId, onVideoChanged}) => {
     return (
         <View style={styles.container}>
             <View style={styles.videoContainer}>
-                <Video
-                    onError={handleVideoError}
-                    source={{ uri: videoSource }}
-                    posterSource={blackPoster}
-                    resizeMode="contain"
-                    shouldPlay={false}
-                    useNativeControls={true}
-                    style={{ width: '100%', height: 300 }}
-                />
+                {videoSource &&
+                    <Video
+                        onError={e => handleVideoError(e)}
+                        key={videoSource}
+                        source={{ uri: videoSource }}
+                        poster={Image.resolveAssetSource(blackPoster).uri}
+                        resizeMode={"contain"}
+                        ignoreSilentSwitch={"ignore"}
+                        controls={true}
+                        style={{ width: '100%', height: 300 }}
+                    />
+                }
                 </View>
             <View>
                 <Text>{notification}</Text>
@@ -85,7 +88,6 @@ const styles = StyleSheet.create({
     videoContainer: {
         height: 300,
         width: "100%",
-        backgroundColor: "black"
     },
     video: {
         height: 400,
