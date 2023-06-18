@@ -1,82 +1,35 @@
+import CookieManager from '@react-native-cookies/cookies';
 import axios from "axios";
 
 const client = axios.create({
-    baseURL: 'https://smotret-anime.com',
-    withCredentials: false,
-});
+    baseURL: "https://smotret-anime.com",
+    headers: {'User-Agent': 'anime365Mobile/0.1'},
+    withCredentials: true
+})
 
-function parseCookies(cookiesArray) {
-    return cookiesArray
-        .map((cookie) => {
-            const [nameAndValue] = cookie.split(';');
-            return nameAndValue.trim();
-        })
-        .join('; ');
-}
-
-async function getCookieValue(cookiesArray, name) {
-    const cookies = parseCookies(cookiesArray);
-    const matchedCookie = cookies.match(new RegExp(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`));
-    return matchedCookie ? matchedCookie[2] : null;
-}
-
-export async function main() {
+export async function WebsiteLogin(email, password) {
     try {
-        const initialResponse = await client.get('/animelist/edit/4974?mode=mini');
-        console.log(initialResponse.headers['set-cookie'])
-        const csrfToken = await getCookieValue(initialResponse.headers['set-cookie'], 'csrf');
+        await CookieManager.getFromResponse(`https://smotret-anime.com/animelist/edit/25875?mode=mini`)
+        const cookies = await CookieManager.get(`https://smotret-anime.com`);
+        return await LoginWithForm(email, password, cookies);
 
-        if (!csrfToken) {
-            throw new Error('CSRF token not found');
-        }
-
-        const formData = `csrf=${csrfToken}&LoginForm%5Busername%5D=hyperclapoff%40yandex.ru&LoginForm%5Bpassword%5D=laik3737ka2000&yt0=&dynpage=1`;
-
-        const loginResponse = await client.post('/users/login', formData, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-Requested-With': 'XMLHttpRequest',
-                Cookie: `csrf=${csrfToken}`,
-            },
-        });
-
-        console.log(loginResponse.status);
-
-        if (loginResponse.status === 200) {
-            const cookies = [
-                ...initialResponse.headers['set-cookie'],
-                ...loginResponse.headers['set-cookie'],
-            ].join('\n');
-            console.log(cookies)
-        }
     } catch (error) {
         console.error('Error:', error);
     }
 }
 
-
-function serializeCookies(cookies) {
-    const something = Object.keys(cookies)
-        .map(name => `${name}=${cookies[name]}`)
-        .join('; ');
-    return something;
-}
-
 export async function LoginWithForm(email, password, cookies) : Promise<string | boolean> {
-    const result = await fetch("https://smotret-anime.com/users/login", {
-        method: "POST",
-        credentials: "include",
+    const formData = `csrf=${cookies.csrf.value}&LoginForm%5Busername%5D=${encodeURIComponent(email)}&LoginForm%5Bpassword%5D=${encodeURIComponent(password)}&yt0=&dynpage=1`;
+    const result = await client.post("/users/login", formData, {
         headers: {
-            'User-Agent': 'anime365Mobile/0.1',
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF8',
-            'X-Requested-With': 'XMLHttpRequest',
-            'Cookie': serializeCookies(cookies)
-        },
-        body: `csrf=${cookies.csrf}&LoginForm%5Busername%5D=hyperclapoff%40yandex.ru&LoginForm%5Bpassword%5D=laik3737ka2000&yt0=&dynpage=1`
+            'X-Requested-With': 'XMLHttpRequest'
+        }
     })
-    const authToken = getCookieValue(result.headers.get("set-cookie"), "aaaa8ed0da05b797653c4bd51877d861");
-    console.log(result.headers.get("set-cookie"))
-    if (authToken)
-        return authToken;
+    //Кука aaaa8ed0da05b797653c4bd51877d861 хранит в себе данные об авторизации пользователя, она сохранится в куках устройства
+    //Но на всякий случай лучше сохранить ее еще в AsyncStorage, чтобы не волноваться об ее исчезновении.
+    if (result.headers["set-cookie"].find(cookie => cookie.includes("aaaa8ed0da05b797653c4bd51877d861"))) {
+        return (await CookieManager.get("https://smotret-anime.com")).aaaa8ed0da05b797653c4bd51877d861.value
+    }
     return false;
 }
