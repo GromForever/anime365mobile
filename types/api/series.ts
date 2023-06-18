@@ -156,6 +156,8 @@ export interface SeriesResponse {
     }
 }
 
+
+
 export interface Episode {
     /**
      * id эпизода на сайте.
@@ -220,6 +222,10 @@ export interface EpisodesResponse {
 export interface ExtendedTranslation extends Translation{
     episode: Episode,
     series: SeriesResponse["data"]
+}
+
+export interface SeriesResponseArray {
+    data: SeriesResponse["data"][]
 }
 
 export interface TranslationsResponse {

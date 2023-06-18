@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {FetchAnimeAsync} from "../api/series";
 import {useNavigation} from "@react-navigation/native";
+import {SeriesResponse, SeriesResponseArray} from "../types/api/series";
 
 export default function useFetchAnimeByQuery() {
     const [anime, setAnime] = useState([])
@@ -11,11 +12,15 @@ export default function useFetchAnimeByQuery() {
 
     useEffect(() => {
             setIsLoading(true)
-            FetchAnimeAsync(0, 10, query).catch(error => {
-                setError(error)
-            }).then(data => {
-                setAnime(data)
+            FetchAnimeAsync(0, 10, query).then((data) => {
+                if ("data" in data) {
+                    setAnime(data.data)
+                } else {
+                    setError(data.error.message)
+                }
                 setIsLoading(false)
+            }).catch(error => {
+                setError(error.message)
             }).finally(() => {
                 setIsLoading(false)
             })
@@ -24,7 +29,10 @@ export default function useFetchAnimeByQuery() {
     async function onEndReached() {
         if (isLoading !== true) {
             const newAnime = await FetchAnimeAsync(anime.length, 10, query)
-            setAnime(prevAnime => [...prevAnime, ...newAnime])
+            if ("data" in newAnime) {
+                const seriesNewAnime = newAnime as SeriesResponseArray
+                setAnime(prevAnime => [...prevAnime, ...seriesNewAnime.data])
+            }
         }
     }
 
@@ -33,7 +41,11 @@ export default function useFetchAnimeByQuery() {
             setIsLoading(true)
             setIsRefreshing(true)
             const anime = await FetchAnimeAsync(0,10, "");
-            setAnime(anime);
+            if ("data" in anime) {
+                setAnime(anime.data);
+            } else {
+                setError(anime.error.message)
+            }
             setIsRefreshing(false)
             setIsLoading(false)
         } catch (e) {

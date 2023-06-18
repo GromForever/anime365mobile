@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import {FetchOneAnimeAsync} from "../api/series";
 import {fetchTranslationsForEpisode, fetchTranslationStreams} from "../api/episodes";
 import {isErrorResponse, isSuccessResponse} from "../common/apiHelper";
-import {SeriesResponse} from "../types/api/series";
+import {SeriesResponse, Translation} from "../types/api/series";
 import {userStore} from "../store";
 
 export const useAnimePlayerData = (animeId : number, episodeId : number) => {
     const [videoSource, setVideoSource] = useState<string>(null);
     const [error, setError] = useState<string>(null)
     const [episodes, setEpisodes] = useState<SeriesResponse>(null)
-    const [translations, setTranslations] = useState([]);
+    const [translations, setTranslations] = useState<Translation[]>([]);
     const [selectedTranslation, setSelectedTranslation] = useState(null);
     const [quality, setQuality] = useState<number>(1080);
     const [notification, setNotification] = useState<string>('');
@@ -31,18 +31,23 @@ export const useAnimePlayerData = (animeId : number, episodeId : number) => {
             }
 
             const episodeData = await fetchTranslationsForEpisode(targetEpisode.id)
-            setTranslations(episodeData.translations);
+            if ("data" in episodeData) {
+                setTranslations(episodeData.data.translations);
 
-            const voiceRuTranslation = episodeData.translations.find((translation) => translation.type === 'voiceRu');
-            //TODO: Переделать, добавить чтобы если не было русской озвучки, смотреть на другие типы и выбрать там первый из вариантов.
-            if (!voiceRuTranslation) {
-                throw new Error('Перевод на русский не найден');
+
+                const voiceRuTranslation = episodeData.data.translations.find((translation) => translation.type === 'voiceRu');
+                //TODO: Переделать, добавить чтобы если не было русской озвучки, смотреть на другие типы и выбрать там первый из вариантов.
+                if (!voiceRuTranslation) {
+                    throw new Error('Перевод на русский не найден');
+                }
+                setSelectedTranslation(voiceRuTranslation);
+
+                const translationResponse = await fetchTranslationStreams(voiceRuTranslation.id, userStore.token)
+                if ("data" in translationResponse) {
+                    setStreamData(translationResponse)
+                    setVideoSource(translationResponse.data.stream[0].urls[0]);
+                }
             }
-            setSelectedTranslation(voiceRuTranslation);
-
-            const translationResponse = await fetchTranslationStreams(voiceRuTranslation.id, userStore.token)
-            setStreamData(translationResponse)
-            setVideoSource(translationResponse.stream[0].urls[0]);
         } catch (error) {
             console.error('Ошибка при получении данных:', error);
         }
@@ -55,18 +60,19 @@ export const useAnimePlayerData = (animeId : number, episodeId : number) => {
     const selectTranslation = async (translation, videoQuality, skipNotification = false) => {
         try {
             const translationResponse = await fetchTranslationStreams(translation.id, userStore.token)
+            if ("data" in translationResponse) {
+                const availableQualities = translationResponse.data.stream.map((stream) => stream.height);
+                if (!availableQualities.includes(videoQuality)) {
+                    videoQuality = availableQualities[0]; // Если выбранного качества нет, устанавливаем первое доступное
+                }
+                setQuality(videoQuality);
 
-            const availableQualities = translationResponse.stream.map((stream) => stream.height);
-            if (!availableQualities.includes(videoQuality)) {
-                videoQuality = availableQualities[0]; // Если выбранного качества нет, устанавливаем первое доступное
-            }
-            setQuality(videoQuality);
-
-            const streamSource = translationResponse.stream.find((stream) => stream.height === videoQuality);
-            setVideoSource(streamSource.urls[0]);
-            setSelectedTranslation(translation);
-            if (!skipNotification) {
-                setNotification('');
+                const streamSource = translationResponse.data.stream.find((stream) => stream.height === videoQuality);
+                setVideoSource(streamSource.urls[0]);
+                setSelectedTranslation(translation);
+                if (!skipNotification) {
+                    setNotification('');
+                }
             }
         } catch (error) {
             console.error('Ошибка при получении данных:', error);
@@ -74,7 +80,7 @@ export const useAnimePlayerData = (animeId : number, episodeId : number) => {
     };
 
     const handleVideoError = (error) => {
-        console.error('Ошибка при воспроизведении видео:', error);
+        console.error(`Ошибка при воспроизведении видео: ${error}`);
 
         if (!selectedTranslation) return;
 
