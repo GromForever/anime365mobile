@@ -48,7 +48,6 @@ const AnimeList = (callback, deps) => {
                     style={Styles.margin}
                     onRefresh={onRefresh}
                     refreshing={isRefreshing}
-                    stickyHeaderIndices={[0]}
                     data={anime}
                     ItemSeparatorComponent={Separator}
                     numColumns={2}

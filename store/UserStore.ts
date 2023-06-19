@@ -65,7 +65,6 @@ export default class UserStore {
             if (!websiteCookie)
                 return false;
             const websiteCookieString = websiteCookie as string;
-            console.log(websiteCookieString)
             const authData = tokenOrError as LoginResponse
             const infoAboutUser = await GetInfoAboutUser(authData.data.access_token)
             runInAction(() => {

@@ -6,7 +6,7 @@ import {useTheme} from "../../hooks/useTheme";
 import {observer} from "mobx-react-lite";
 import {userStore} from "../../store";
 import NavigationSettingsItem from "./NavigationSettingsItem";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons";
 
 const Settings = observer(() => {
     const {themeStyles} = useTheme();
@@ -16,6 +16,14 @@ const Settings = observer(() => {
             {isLogined && <SettingsGroup>
                 <NavigationSettingsItem title={"Управление подпиской"} icon={<MaterialCommunityIcons name="crown" size={24} color="yellow" />} route={"subscriptionSettings"}/>
             </SettingsGroup>}
+            {__DEV__ &&
+                <View>
+                    <View style={{paddingVertical: 10}}></View>
+                    <SettingsGroup>
+                        <NavigationSettingsItem title={"Инструменты разработчика"} icon={<MaterialIcons name="developer-mode" size={24} color="black" />} route={"developerSettings"}/>
+                    </SettingsGroup>
+                </View>
+            }
             <View style={{paddingVertical: 10}}></View>
             <SettingsGroup data={data}/>
         </View>

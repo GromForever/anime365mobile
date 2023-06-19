@@ -4,6 +4,7 @@ import {useTheme} from "../hooks/useTheme";
 import AuthScreen from "../components/Screens/AuthScreen";
 import SubscriptionSettingsScreen from "../components/Screens/SubscriptionSettingsScreen";
 import DesignSettingsScreen from "../components/Screens/DesignSettingsScreen";
+import DeveloperScreen from "../components/Screens/DeveloperScreen";
 
 const Stack = createNativeStackNavigator();
 export const ProfileNavigation = () => {
@@ -14,6 +15,7 @@ export const ProfileNavigation = () => {
             <Stack.Screen name={"designSettings"} component={DesignSettingsScreen} options={({route}) => ({title: route.params.title})}/>
             <Stack.Screen name={"authScreen"} component={AuthScreen} options={{title: "Авторизация"}}/>
             <Stack.Screen name={"subscriptionSettings"} component={SubscriptionSettingsScreen} options={({route}) => ({title: route.params.title})}></Stack.Screen>
+            <Stack.Screen name={"developerSettings"} component={DeveloperScreen} options={({route}) => ({title: "Разработка"})}/>
         </Stack.Navigator>
     )
 }
