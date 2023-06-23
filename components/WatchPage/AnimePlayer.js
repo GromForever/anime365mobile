@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Pressable, Image} from "react-native";
-import Video from "react-native-video";
+import Video, {TextTrackType} from "react-native-video";
 import {useAnimePlayerData} from "../../hooks/useAnimePlayerData";
 import blackPoster from "../../assets/common/blackOnePixel.png"
 import {useNavigation, useRoute} from "@react-navigation/native";
@@ -50,6 +50,16 @@ const AnimePlayer = ({animeId, episodeId, onVideoChanged}) => {
                 {videoSource &&
                     <Video
                         onError={e => handleVideoError(e)}
+                        textTracks={
+                        [
+                            {
+                                title: "main subtitiles",
+                                uri: "https://bitdash-a.akamaihd.net/content/sintel/subtitles/subtitles_en.vtt",
+                                type: TextTrackType.VTT,
+                                language: "en"
+                            }
+                        ]
+                        }
                         key={videoSource}
                         source={{ uri: videoSource }}
                         poster={Image.resolveAssetSource(blackPoster).uri}
